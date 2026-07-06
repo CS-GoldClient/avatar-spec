@@ -1,12 +1,14 @@
 🌐 Available languages: ![ru](https://github.com/user-attachments/assets/4435f244-de23-42c6-9a58-ba1652d599bd) [Русский](README.ru.md) | ![en](https://github.com/user-attachments/assets/80b023a9-d8e6-44e6-aff8-6532663ffe3a) [English](README.md)
 
 # GoldSrc Avatar Hub Protocol Concept
-> ⚠️ This is currently a conceptual specification. The system is not yet implemented by any client. URL templates for provider hubs are to be defined (TBD). As implementations progress, this document will be updated to reflect working standards.
+> ⚠️ This is currently a conceptual specification. \
+The system is currently partially implemented. For detailed information, see the [Provider Status](#provider-status) section. \
+As implementations progress, this document will be updated to reflect working standards.
 
 ## Annotation
 
 This repository outlines the conceptual specification for a **decentralized, federated avatar system** for GoldSrc engine clients (such as Counter-Strike 1.6). \
-The goal of this protocol is to provide a unified, efficient, and scalable method for different client modifications ( e.g., [GoldClient](https://gold-plus.github.io/en/), [NextClient](https://github.com/CS-NextClient/NextClient) ) to share and display custom player avatars without relying on a single, centralized server, thus preventing bottlenecks and single points of failure inherent in legacy systems.
+The goal of this protocol is to provide a unified, efficient, and scalable method for different client modifications ( e.g., [GoldClient](https://goldclient.ru/en/), [NextClient](https://github.com/CS-NextClient/NextClient) ) to share and display custom player avatars without relying on a single, centralized server, thus preventing bottlenecks and single points of failure inherent in legacy systems.
 
 The core principle is **client-side identification and direct, immutable avatar fetching**. \
 Avatars can be served from standard web servers, and providers may optionally use CDN or reverse proxies to improve performance, caching, and scalability if needed.
@@ -28,7 +30,7 @@ Avatars can be served from standard web servers, and providers may optionally us
 
 ## What is `*aid`?
 
-**AvatarID (`*aid`)** is a standardized, compact, and unique id within a provider for avatar used in GoldSrc-based clients ( e.g., [GoldClient](https://gold-plus.github.io/en/), [NextClient](https://github.com/CS-NextClient/NextClient) ). \
+**AvatarID (`*aid`)** is a standardized, compact, and unique id within a provider for avatar used in GoldSrc-based clients ( e.g., [GoldClient](https://goldclient.ru/en/), [NextClient](https://github.com/CS-NextClient/NextClient) ). \
 It is intended to be transmitted via the player's `userinfo` string, enabling clients to share avatar identifiers across different, independent clients.
 
 An `*aid` consists of two parts: \
@@ -230,9 +232,9 @@ This collaborative approach allows all participating communities to benefit from
 
 ## Provider status
 
-- `G` → GoldClient  (URL template `http://public.goldclient.live/avatars/`)
-- `N` → NextClient  (URL template <code style="color:dimgray">*TBD*</code>)
-- `S` → SteamClient (URL template `https://steamcommunity.com/profiles/{*sid}?xml=1`)
+- 🟢 `G` → GoldClient  (URL template `http://public.goldclient.live/avatars/`)
+- ⚪ `N` → NextClient  (URL template <code style="color:dimgray">*TBD*</code>)
+- 🟢 `S` → SteamClient (URL template `https://steamcommunity.com/profiles/{*sid}?xml=1`)
 - More providers may join by defining their prefix and hub rules.
 
 ---
