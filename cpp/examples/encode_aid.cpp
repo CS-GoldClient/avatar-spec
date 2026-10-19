@@ -1,9 +1,11 @@
 //-----------------------------------------------------------------------------
 // File: examples/encode_aid.cpp
-// Purpose: Minimal example demonstrating encoding and decoding of avatar hashes
-//          using a GoldSrc-safe custom Base85 alphabet for the *aid system.
+// Purpose: Minimal example demonstrating encoding and decoding of the *aid block
+//          (1-byte revision + 8-byte avatar hash) with standard Base64 (RFC 4648).
 //-----------------------------------------------------------------------------
 
+#include <cstdint>
+#include <cstring>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -29,11 +31,11 @@ std::string BytesToHexString(const uint8_t *data, size_t size)
 
 int main()
 {
-    // Example binary avatar id (9 bytes)
+    // Example binary *aid block (9 bytes)
     uint8_t raw_aid[] =
     {
-        0x96, // 150 revision
-        0x46, 0xe9, 0x99, 0x8a, 0x32, 0x85, 0x53, 0x3a // 8 bytes unique user hash
+        0x00, // revision 0: the hub names the picture by its content hash
+        0x12, 0x54, 0x48, 0x2b, 0xfb, 0xae, 0x9d, 0x08 // avatar hash: first 8 bytes of SHA-256 of the whole file
     };
 
     // Encode
@@ -50,13 +52,14 @@ int main()
 
     encoded.resize(encode_size);
 
-    std::cout << "*aid encoded hash: " << encoded << std::endl;
+    std::cout << "*aid: G" << encoded << std::endl;
 
     // Decode
-    uint32_t decode_size = base64::GetDecodeMaxOutput(encoded.size());
+    const uint32_t encoded_size = static_cast<uint32_t>(encoded.size());
+    uint32_t decode_size = base64::GetDecodeMaxOutput(encoded_size);
     std::vector<uint8_t> decoded(decode_size);
 
-    if (!base64::Decode(encoded.c_str(), encoded.size(), decoded.data(), &decode_size))
+    if (!base64::Decode(encoded.c_str(), encoded_size, decoded.data(), &decode_size))
     {
         std::cerr << "Decoding failed!" << std::endl;
         return 1;
@@ -74,16 +77,17 @@ int main()
         return 1;
     }
 
-    // unique user hash
+    // avatar hash
     if (memcmp(decoded.data() + 1, raw_aid + 1, decoded.size() - 1) != 0)
     {
-        std::cerr << "Decoded user hash does not match original! (Encoding issue)" << std::endl;
+        std::cerr << "Decoded avatar hash does not match original! (Encoding issue)" << std::endl;
         return 1;
     }
 
     std::string hexHash = BytesToHexString(decoded.data() + 1, decoded.size() - 1);
     std::cout << "Decoded revision: " << static_cast<int>(decoded[0]) << std::endl;
-    std::cout << "Decoded hash string: " << hexHash << std::endl;
+    std::cout << "Decoded avatar hash: " << hexHash << std::endl;
+    std::cout << "URL: http://public.goldclient.live/avatars/" << hexHash << std::endl;
 
     return 0;
 }

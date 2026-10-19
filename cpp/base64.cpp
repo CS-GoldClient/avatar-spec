@@ -118,7 +118,7 @@ bool Encode(const uint8_t *pubData, uint32_t cubData, char *pchEncodedData, uint
 	}
 
 	*pchEncodedData = 0;
-	*pcchEncodedData = pchEncodedData - pchEncodedDataStart;
+	*pcchEncodedData = (uint32_t)(pchEncodedData - pchEncodedDataStart);
 	return true;
 
 out_of_space:
